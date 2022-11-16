@@ -1,0 +1,16 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html,
+body,
+#root {
+  background-color: #F5F5F5;
+  height: 100%;
+}
