@@ -1,0 +1,44 @@
+export const sxCategoryContainer = (active?: boolean) => ({
+  with: "150px",
+  boxShadow: "none",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: 0.5,
+  filter: "opacity(0.6) grayscale(.6)",
+  transition: "filter 0.3s ease-out, transform 0.1s ease-in-out",
+  "&:hover": {
+    cursor: "pointer",
+    filter: "opacity(1) grayscale(0)",
+    transform: "translateY(-1px)",
+  },
+  "&:active": {
+    cursor: "pointer",
+    filter: "opacity(1) grayscale(0)",
+    transform: "translateY(1px)",
+  },
+  ...(active && {
+    filter: "opacity(1) grayscale(0)",
+    "& .MuiCardMedia-root": {
+      borderWidth: "2px",
+      borderColor: "secondary.main",
+    },
+  }),
+});
+
+export const sxCategoryImage = {
+  height: "50px",
+  width: "50px",
+  borderRadius: "50%",
+  objectFit: "contain",
+  backgroundColor: "white",
+  border: "1px solid",
+  borderColor: "secondary.main",
+};
+
+export const sxCategoryName = {
+  fontSize: "13px",
+  fontWeight: 600,
+  textAlign: "center",
+  whiteSpace: "nowrap",
+};

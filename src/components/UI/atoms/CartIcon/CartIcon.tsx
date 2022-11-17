@@ -9,8 +9,8 @@ export default function CartIcon() {
         color: theme => theme.palette.secondary.contrastText,
         borderRadius: '50%',
         padding: '0.5rem',
-        width: '2.5rem',
-        height: '2.5rem',
+        width: '4rem',
+        height: '4rem',
       }}
     />
   )
