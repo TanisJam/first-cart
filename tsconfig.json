@@ -28,6 +28,7 @@
       "@Atoms/*": ["components/UI/atoms/*"],
       "@Redux/*": ["redux/*"],
       "@Styles/*": ["styles/*"],
+      "@Types/*": ["types/*"],
     }
   },
   "include": ["./src"],
