@@ -2,7 +2,7 @@ import Navbar from "@Organisms/Navbar";
 import { Container } from "@mui/material"
 
 type Props = {
-  children?: React.ReactNode
+  children?: React.ReactNode,
 }
 
 export default function Main({ children }: Props) {

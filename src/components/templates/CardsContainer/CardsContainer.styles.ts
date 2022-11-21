@@ -1,4 +1,4 @@
-export const sxProductsBox = {
+export const sxCardsBox = {
   display: "flex",
   flexDirection: "row",
   justifyContent: "center",
