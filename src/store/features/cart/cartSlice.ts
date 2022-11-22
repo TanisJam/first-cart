@@ -17,6 +17,9 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    hydrate: (state, action) => {
+      return action.payload;
+    },
     addToCart: (state, action) => {
       const item = state.items.find((item) => item.id === action.payload.id);
       if (item) {
@@ -38,7 +41,8 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart, editCartItem } = cartSlice.actions;
+export const { hydrate, addToCart, removeFromCart, editCartItem } =
+  cartSlice.actions;
 
 export const selectCart = (state: RootState) => state.cart.items;
 

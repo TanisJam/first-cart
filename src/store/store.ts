@@ -1,8 +1,26 @@
-import { configureStore } from "@reduxjs/toolkit";
+import {
+  configureStore,
+  createListenerMiddleware,
+  isAnyOf,
+} from "@reduxjs/toolkit";
 import counterReducer from "./features/counter/counterSlice";
-import cartReducer from "./features/cart/cartSlice";
+import cartReducer, {
+  addToCart,
+  editCartItem,
+  removeFromCart,
+} from "./features/cart/cartSlice";
 import productsReducer from "./features/productsFilter/productsFilterSlice";
 import { productsApi } from "./services/products";
+
+// listen for modifications to the cart state and persist them to localStorage
+const listenerMiddleware = createListenerMiddleware();
+listenerMiddleware.startListening({
+  matcher: isAnyOf(addToCart, editCartItem, removeFromCart),
+  effect: (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    localStorage.setItem("cartState", JSON.stringify(state.cart));
+  },
+});
 
 export const store = configureStore({
   reducer: {
@@ -12,7 +30,9 @@ export const store = configureStore({
     [productsApi.reducerPath]: productsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(productsApi.middleware),
+    getDefaultMiddleware()
+      .concat(productsApi.middleware)
+      .prepend(listenerMiddleware.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
