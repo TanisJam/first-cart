@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo } from "react";
 import { useAppSelector } from "@Store/hooks";
 import { useGetProductsQuery } from "@Store/services/products";
 import Error from "@Molecules/Error/Error";
@@ -9,16 +9,20 @@ import { sxCardsBox } from "./CardsContainer.styles";
 
 export default function CardsContainer() {
   const { data, isLoading, isError } = useGetProductsQuery();
-  const { categories, search } = useAppSelector((state) => state.productsFilter);
+  const { categories, searchQuery } = useAppSelector(
+    (state) => state.productsFilter
+  );
 
   const products = useMemo(() => {
     if (!data) return [];
     return data.filter((product) => {
       const isCategoryMatch = categories.includes(product.category);
-      const isSearchMatch = product.title.toLowerCase().includes(search.toLowerCase());
+      const isSearchMatch = product.title
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
       return isCategoryMatch && isSearchMatch;
     });
-  }, [data, categories, search]);
+  }, [data, categories, searchQuery]);
 
   if (isError) return <Error />;
 

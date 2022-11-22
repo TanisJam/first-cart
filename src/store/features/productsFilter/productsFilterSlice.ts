@@ -4,13 +4,13 @@ import { Product } from "@Types/product";
 
 interface ProductsFilterState {
   categories: string[];
-  search: string;
+  searchQuery: string;
   filteredList: Product[];
 }
 
 const initialState: ProductsFilterState = {
   categories: [],
-  search: "",
+  searchQuery: "",
   filteredList: [],
 };
 
@@ -30,8 +30,8 @@ export const productsFilterSlice = createSlice({
         state.categories.splice(index, 1);
       }
     },
-    setSearch: (state, action) => {
-      state.search = action.payload;
+    setSearchQuery: (state, action) => {
+      state.searchQuery = action.payload;
     },
     setFilteredList: (state, action) => {
       state.filteredList = action.payload;
@@ -39,7 +39,7 @@ export const productsFilterSlice = createSlice({
   },
 });
 
-export const { setCategories, setCategory, setSearch, setFilteredList } =
+export const { setCategories, setCategory, setSearchQuery, setFilteredList } =
   productsFilterSlice.actions;
 
 export const selectFilteredList = (state: RootState) =>

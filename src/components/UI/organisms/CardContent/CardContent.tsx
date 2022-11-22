@@ -21,7 +21,7 @@ export default function CardContent({ title, price, rating, isCart }: Props) {
       </Typography>
       {!isCart && (
         <Box sx={{ display: "flex", gap: 1, alignItems: "center", justifyContent: "center" }}>
-          <Rating name="half-rating-read" defaultValue={rating.rate} precision={0.1} readOnly />
+          <Rating name="half-rating-read" defaultValue={rating.rate} precision={0.5} readOnly />
           <Typography variant="body2" color="text.secondary">
             {rating.count}
           </Typography>
