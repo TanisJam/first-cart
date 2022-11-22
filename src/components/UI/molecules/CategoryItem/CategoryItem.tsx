@@ -5,13 +5,10 @@ import {
   setCategory,
   setCategories,
 } from "@Store/features/productsFilter/productsFilterSlice";
+import CategoryActions from "@Molecules/CategoryActions";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
-import MyLocationIcon from "@mui/icons-material/MyLocation";
 import getRandomItem from "@Utils/functions/getRandomItem";
 import capitalizeString from "@Utils/functions/capitalizeString";
 import {
@@ -19,8 +16,6 @@ import {
   sxCategoryName,
   sxCategoryContainer,
 } from "./CategoryItem.styles";
-import Box from "@mui/material/Box";
-import { IconButton } from "@mui/material";
 
 type Props = {
   name: string;
@@ -30,38 +25,34 @@ type Props = {
 export default function CategoryItem({ name, images }: Props) {
   const dispatch = useAppDispatch();
   const allCategories = useGetCategories();
-  const categories = useAppSelector((state) => state.productsFilter.categories);
-  const active = categories.includes(name);
-  const solo = categories.length === 1 && active;
+  const currentCategories = useAppSelector(
+    (state) => state.productsFilter.categories
+  );
+  const isActive = currentCategories.includes(name);
+  const isSolo = currentCategories.length === 1 && isActive;
   const randomImage = useMemo(() => getRandomItem(images), [images]);
-
-  const handleCategorySelect = () => {
-    dispatch(setCategory(name));
-  };
-  const handleCategorySoloSelect = () => {
-    if (solo) {
-      dispatch(setCategories(allCategories));
-    } else {
-      dispatch(setCategories([name]));
-    }
-  };
+  const toggleCategorySelect = () => dispatch(setCategory(name));
+  const toggleCategorySoloSelect = () =>
+    isSolo
+      ? dispatch(setCategories(allCategories))
+      : dispatch(setCategories([name]));
 
   return (
-    <Card sx={sxCategoryContainer(active)}>
+    <Card sx={sxCategoryContainer(isActive)}>
       <CardMedia
         component="img"
         image={randomImage}
         alt={name}
         sx={sxCategoryImage}
       />
-      <Box>
-        <IconButton onClick={handleCategorySoloSelect}>
-          {solo ? <MyLocationIcon /> : <LocationSearchingIcon />}
-        </IconButton>
-        <IconButton onClick={handleCategorySelect}>
-          {active ? <VisibilityIcon /> : <VisibilityOffIcon />}
-        </IconButton>
-      </Box>
+      <CategoryActions
+        {...{
+          isSolo,
+          isActive,
+          toggleCategorySoloSelect,
+          toggleCategorySelect,
+        }}
+      />
       <Typography component="h5" sx={sxCategoryName}>
         {capitalizeString(name)}
       </Typography>
