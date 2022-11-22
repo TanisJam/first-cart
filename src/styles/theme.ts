@@ -26,7 +26,7 @@ let theme = createTheme({
     },
     neutral: {
       main: "#9C9C9C",
-      light: "#CFCFCF",
+      light: "#EEEEEE",
       dark: "#7C7979",
     },
     info: {

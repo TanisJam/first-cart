@@ -12,3 +12,9 @@ export const sxCartIcon = {
     transform: "scale(1.05)",
   },
 };
+
+export const sxCartIconBadge = {
+  "& span": {
+    transform: "unset",
+  },
+};
