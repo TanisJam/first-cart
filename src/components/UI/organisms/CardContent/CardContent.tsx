@@ -10,20 +10,23 @@ type Props = {
     rate: number;
     count: number;
   };
+  isCart?: boolean;
 }
 
-export default function CardContent({ title, price, rating }: Props) {
+export default function CardContent({ title, price, rating, isCart }: Props) {
   return (
     <CardContentMui>
       <Typography gutterBottom variant="body1" component="p">
         {title}
       </Typography>
-      <Box sx={{ display: "flex", gap: 1, alignItems: "center", justifyContent: "center" }}>
-        <Rating name="half-rating-read" defaultValue={rating.rate} precision={0.1} readOnly />
-        <Typography variant="body2" color="text.secondary">
-          {rating.count}
-        </Typography>
-      </Box>
+      {!isCart && (
+        <Box sx={{ display: "flex", gap: 1, alignItems: "center", justifyContent: "center" }}>
+          <Rating name="half-rating-read" defaultValue={rating.rate} precision={0.1} readOnly />
+          <Typography variant="body2" color="text.secondary">
+            {rating.count}
+          </Typography>
+        </Box>
+      )}
       <Typography variant="h6" color="text.secondary.main">
         ${price.toLocaleString("en-US", { minimumFractionDigits: 2 })}
       </Typography>

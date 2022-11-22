@@ -1,3 +1,4 @@
+import { useGetProductsQuery } from '@Store/services/products';
 import Accordion from '@mui/material/Accordion'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
@@ -5,14 +6,13 @@ import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CategoriesSlider from '@Organisms/CategoriesSlider';
 
-
-
 import { sxAccordion, sxAccordionSummary } from './Categories.styles'
 
+export default function Categories() {
 
-type Props = {}
+  const { data, isLoading, error } = useGetProductsQuery();
 
-export default function Categories({ }: Props) {
+  if (isLoading || error) return null;
 
   return (
     <Accordion sx={sxAccordion} >
@@ -20,10 +20,10 @@ export default function Categories({ }: Props) {
         expandIcon={<ExpandMoreIcon />}
         sx={sxAccordionSummary}
       >
-        <Typography>CATEGORIES</Typography>
+        <Typography variant='body2' >CATEGORIES</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <CategoriesSlider />
+        <CategoriesSlider products={data || []} />
       </AccordionDetails>
     </Accordion >
   )

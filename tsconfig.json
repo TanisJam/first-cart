@@ -26,9 +26,10 @@
       "@Organisms/*": ["components/UI/organisms/*"],
       "@Molecules/*": ["components/UI/molecules/*"],
       "@Atoms/*": ["components/UI/atoms/*"],
-      "@Redux/*": ["redux/*"],
+      "@Store/*": ["store/*"],
       "@Styles/*": ["styles/*"],
       "@Types/*": ["types/*"],
+      "@Utils/*": ["utils/*"]
     }
   },
   "include": ["./src"],

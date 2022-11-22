@@ -1,17 +1,15 @@
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import { sxCartIcon } from './CartIcon.styles';
 
+type Props = {
+  onClick: () => void,
+}
 
-export default function CartIcon() {
+export default function CartIcon({ onClick }: Props) {
   return (
     <ShoppingCartOutlinedIcon
-      sx={{
-        backgroundColor: theme => theme.palette.secondary.main,
-        color: theme => theme.palette.secondary.contrastText,
-        borderRadius: '50%',
-        padding: '0.5rem',
-        width: '4rem',
-        height: '4rem',
-      }}
+      sx={sxCartIcon}
+      onClick={onClick}
     />
   )
 }

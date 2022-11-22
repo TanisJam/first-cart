@@ -1,22 +1,33 @@
 import Card from "@mui/material/Card"
 import CardMedia from "@mui/material/CardMedia"
 import Typography from "@mui/material/Typography"
-import { sxCategoryImage, sxCategoryName, sxCategoryContainer } from "./CategoryItem.styles"
+import getRandomItem from "@Utils/getRandomItem"
+import capitalizeString from "@Utils/capitalizeString"
+import {
+  sxCategoryImage,
+  sxCategoryName,
+  sxCategoryContainer
+} from "./CategoryItem.styles"
 
 type Props = {
-  active?: boolean
+  active?: boolean,
+  name: string,
+  images: string[],
 }
 
-export default function CategoryItem({ active }: Props) {
+export default function CategoryItem({ active, name, images }: Props) {
+
   return (
     <Card sx={sxCategoryContainer(active)}>
       <CardMedia
         component="img"
-        image="/images/c.jpg"
-        alt="ring"
+        image={getRandomItem(images)}
+        alt={name}
         sx={sxCategoryImage}
       />
-      <Typography component="h5" sx={sxCategoryName}>Women's Clothing</Typography>
+      <Typography component="h5" sx={sxCategoryName}>
+        {capitalizeString(name)}
+      </Typography>
     </Card>
   )
 }

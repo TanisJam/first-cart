@@ -1,13 +1,14 @@
 export const sxActionsContainer = {
   display: "flex",
+  gap: "1.5rem",
   flexDirection: "column",
   marginInline: "auto",
   padding: "1rem 0",
+  textAlign: "center",
 };
 
 export const sxActionsBox = {
   width: "100%",
-  height: "5.5rem",
   display: "flex",
   gap: "1rem",
   alignItems: "flex-start",

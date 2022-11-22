@@ -6,7 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import { sxProductCard, sxCardImage } from './ProductCard.styles';
 import { Product } from '@Types/product';
 
-export default function ProductCard({ title, price, rating, image }: Product) {
+export default function ProductCard({ title, price, rating, image, id }: Product) {
   const [quantity, setQuantity] = useState(1);
   return (
     <Card sx={sxProductCard}>
@@ -17,7 +17,7 @@ export default function ProductCard({ title, price, rating, image }: Product) {
         sx={sxCardImage}
       />
       <CardContent {... { title, price, rating }} />
-      <CardActions {...{ price, quantity, setQuantity }} />
+      <CardActions {...{ price, quantity, setQuantity, id }} />
     </Card>
   )
 }
