@@ -1,4 +1,10 @@
 export const sxAccordion = {
+  "& .MuiAccordionDetails-root": {
+    paddingBottom: "0rem",
+    "& .MuiBox-root": {
+      paddingBottom: "0rem",
+    },
+  },
   "&.MuiPaper-root ": {
     marginTop: "0rem",
     color: "secondary.main",

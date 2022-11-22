@@ -3,26 +3,14 @@ import type { RootState } from "@Store/store";
 import { Product } from "@Types/product";
 
 interface ProductsFilterState {
-  categories: {
-    isFiltering: boolean;
-    categories: string[];
-  };
-  search: {
-    isSearching: boolean;
-    query: string;
-  };
+  categories: string[];
+  search: string;
   filteredList: Product[];
 }
 
 const initialState: ProductsFilterState = {
-  categories: {
-    isFiltering: false,
-    categories: [],
-  },
-  search: {
-    isSearching: false,
-    query: "",
-  },
+  categories: [],
+  search: "",
   filteredList: [],
 };
 
@@ -33,6 +21,15 @@ export const productsFilterSlice = createSlice({
     setCategories: (state, action) => {
       state.categories = action.payload;
     },
+    setCategory: (state, action) => {
+      const category = action.payload;
+      const index = state.categories.indexOf(category);
+      if (index === -1) {
+        state.categories.push(category);
+      } else {
+        state.categories.splice(index, 1);
+      }
+    },
     setSearch: (state, action) => {
       state.search = action.payload;
     },
@@ -42,7 +39,7 @@ export const productsFilterSlice = createSlice({
   },
 });
 
-export const { setCategories, setSearch, setFilteredList } =
+export const { setCategories, setCategory, setSearch, setFilteredList } =
   productsFilterSlice.actions;
 
 export const selectFilteredList = (state: RootState) =>

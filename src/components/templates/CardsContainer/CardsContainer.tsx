@@ -1,31 +1,41 @@
-import { useGetProductsQuery } from "@Store/services/products"
-import SkeletonCard from '@Molecules/SkeletonCard';
+import { useMemo } from 'react';
+import { useAppSelector } from "@Store/hooks";
+import { useGetProductsQuery } from "@Store/services/products";
 import Error from "@Molecules/Error/Error";
-import ProductCard from '@Organisms/ProductCard';
-import Box from '@mui/material/Box';
-import { sxCardsBox } from './CardsContainer.styles';
-
+import ProductCard from "@Organisms/ProductCard";
+import SkeletonCard from "@Molecules/SkeletonCard";
+import Box from "@mui/material/Box";
+import { sxCardsBox } from "./CardsContainer.styles";
 
 export default function CardsContainer() {
-  const { data, isLoading, isError } = useGetProductsQuery()
+  const { data, isLoading, isError } = useGetProductsQuery();
+  const { categories, search } = useAppSelector((state) => state.productsFilter);
 
-  if (isError) return <Error />
+  const products = useMemo(() => {
+    if (!data) return [];
+    return data.filter((product) => {
+      const isCategoryMatch = categories.includes(product.category);
+      const isSearchMatch = product.title.toLowerCase().includes(search.toLowerCase());
+      return isCategoryMatch && isSearchMatch;
+    });
+  }, [data, categories, search]);
 
-  if (isLoading) return (
-    <Box sx={sxCardsBox}>
-      {[...Array(6)].map(
-        (value: undefined, index: number) => (
+  if (isError) return <Error />;
+
+  if (isLoading)
+    return (
+      <Box sx={sxCardsBox}>
+        {[...Array(6)].map((value: undefined, index: number) => (
           <SkeletonCard key={index} />
-        )
-      )}
-    </Box>
-  )
+        ))}
+      </Box>
+    );
 
   return (
     <Box sx={sxCardsBox}>
-      {data?.map((product) => (
+      {products.map((product) => (
         <ProductCard key={product.id} {...product} />
       ))}
     </Box>
-  )
+  );
 }
