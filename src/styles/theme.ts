@@ -38,10 +38,17 @@ let theme = createTheme({
   components: {
     MuiChip: {
       styleOverrides: {
-        root: {
-          backgroundColor: "#FAFAFA",
-          color: "#9C9C9C",
-          fontWeight: 700,
+        root: ({ ownerState }) => {
+          switch (ownerState.color) {
+            case "secondary":
+              return {
+                backgroundColor: "#FAFAFA",
+                color: "#9C9C9C",
+                fontWeight: 700,
+              };
+            default:
+              return {};
+          }
         },
       },
     },
@@ -82,13 +89,5 @@ let theme = createTheme({
     },
   },
 });
-
-// theme = createTheme(theme, {
-//   palette: {
-//     info: {
-//       main: theme.palette.secondary.main,
-//     },
-//   },
-// });
 
 export default theme;
