@@ -5,7 +5,7 @@ import TotalPrice from '@Molecules/TotalPrice';
 import CardActionsMui from '@mui/material/CardActions';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import getDiscountPercentage from '@Utils/getDiscountPercentage';
+import getDiscountPercentage from '@Utils/functions/getDiscountPercentage';
 import type { Product } from '@Types/product';
 import { addToCart } from '@Store/features/cart/cartSlice';
 import { sxActionsBox, sxActionsContainer } from './CardActions.styles';

@@ -2,7 +2,7 @@ import Label from "@Atoms/Label"
 import Box from "@mui/material/Box"
 import Chip from "@mui/material/Chip"
 import Typography from "@mui/material/Typography"
-import formatNumber from "@Utils/formatNumber"
+import formatNumber from "@Utils/functions/formatNumber"
 import { sxTotalContainer, sxTotalPriceLabel, sxDiscount } from "./TotalPrice.styles"
 
 type Props = {

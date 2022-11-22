@@ -10,15 +10,6 @@ export const sxCategoryContainer = (active?: boolean) => ({
   useSelect: "none",
   filter: "opacity(0.6) grayscale(.6)",
   transition: "filter 0.3s ease-out, transform 0.1s ease-in-out",
-  "&:hover": {
-    cursor: "pointer",
-    transform: "translateY(-1px)",
-  },
-  "&:active": {
-    cursor: "pointer",
-    filter: "opacity(1) grayscale(0)",
-    transform: "translateY(1px)",
-  },
   ...(active && {
     filter: "opacity(1) grayscale(0)",
     "& .MuiCardMedia-root": {
