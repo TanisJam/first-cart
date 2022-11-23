@@ -40,7 +40,7 @@ export default function ProductCard({
         {isProductInCart && (
           <Chip
             color="primary"
-            label="Alredy in cart"
+            label="Already in cart"
             sx={sxProductCardChipCart}
           />
         )}
