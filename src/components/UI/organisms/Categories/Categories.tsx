@@ -26,7 +26,7 @@ export default function Categories() {
   if (isLoading || error) return null;
 
   return (
-    <Accordion sx={sxAccordion}>
+    <Accordion sx={sxAccordion} square>
       <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={sxAccordionSummary}>
         <Typography variant="body2">CATEGORIES</Typography>
       </AccordionSummary>

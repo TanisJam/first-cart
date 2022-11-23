@@ -2,7 +2,7 @@ export const sxAccordion = {
   "& .MuiAccordionDetails-root": {
     paddingBottom: "0rem",
     "& .MuiBox-root": {
-      paddingBottom: "0rem",
+      paddingBlock: "0rem",
     },
   },
   "&.MuiPaper-root ": {
