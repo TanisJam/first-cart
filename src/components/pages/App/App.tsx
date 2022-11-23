@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 import { useAppDispatch } from "@Store/hooks";
 import { hydrate } from "@Store/features/cart/cartSlice";
 import getCartFromLocalStorage from "@Utils/functions/getCartFromLocalStorage";
@@ -14,6 +15,7 @@ function App() {
 
   return (
     <Main>
+      <Toaster />
       <CardsContainer />
     </Main>
   );

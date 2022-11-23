@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { editCartItem, removeFromCart } from "@Store/features/cart/cartSlice";
 import { useAppDispatch } from "@Store/hooks";
-import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@Organisms/CardContent";
 import CardActions from "@Organisms/CardActions";
+import ConfirmDialog from "@Molecules/ConfirmDialog";
+import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Card from "@mui/material/Card";
@@ -28,7 +30,7 @@ export default function CartItem({
   image,
 }: Props) {
   const dispatch = useAppDispatch();
-
+  const [openConfirm, setOpenConfirm] = useState(false);
   const handleSetQuantity = (value: number) => {
     dispatch(
       editCartItem({
@@ -37,14 +39,31 @@ export default function CartItem({
       })
     );
   };
-  const handleRemoveItem = () => {
+  const handleConfirm = () => {
     dispatch(removeFromCart(id));
+    setOpenConfirm(false);
+  };
+  const handleCancel = () => {
+    setOpenConfirm(false);
+  };
+  const handleRemove = () => {
+    setOpenConfirm(true);
   };
 
   return (
     <Card sx={sxCartItem}>
-      <IconButton aria-label="delete" color="error" sx={sxCartDelIcon}
-        onClick={handleRemoveItem}
+      <ConfirmDialog
+        title="Remove item"
+        description="Are you sure you want to remove this item from your cart?"
+        open={openConfirm}
+        onClose={handleCancel}
+        onConfirm={handleConfirm}
+      />
+      <IconButton
+        aria-label="delete"
+        color="error"
+        sx={sxCartDelIcon}
+        onClick={handleRemove}
       >
         <CloseIcon />
       </IconButton>
