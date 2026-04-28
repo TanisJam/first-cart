@@ -1,14 +1,21 @@
-import Typography from "@mui/material/Typography"
-import { sxLabel } from "./Label.styles"
+import Typography from "@mui/material/Typography";
 
 type Props = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 export default function Label({ children }: Props) {
   return (
-    <Typography component="h3" sx={sxLabel} >
+    <Typography
+      component="span"
+      variant="overline"
+      sx={{
+        display: "block",
+        color: "text.secondary",
+        mb: 0.5,
+      }}
+    >
       {children}
     </Typography>
-  )
+  );
 }

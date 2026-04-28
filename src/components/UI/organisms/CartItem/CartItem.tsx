@@ -1,21 +1,18 @@
-import { useState } from "react";
-import { editCartItem, removeFromCart } from "@Store/features/cart/cartSlice";
-import { useAppDispatch } from "@Store/hooks";
-import CardContent from "@Organisms/CardContent";
-import CardActions from "@Organisms/CardActions";
-import ConfirmDialog from "@Molecules/ConfirmDialog";
-import CardMedia from "@mui/material/CardMedia";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import Card from "@mui/material/Card";
+import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import Box from "@mui/material/Box";
-import { Product } from "@Types/product";
-import {
-  sxCartItem,
-  sxCartDelIcon,
-  sxCartImage,
-  sxCartContent,
-} from "./CartItem.styles";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import Chip from "@mui/material/Chip";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { useAppDispatch } from "@Store/hooks";
+import { editCartItem, removeFromCart } from "@Store/features/cart/cartSlice";
+import QuantitySelector from "@Molecules/QuantitySelector";
+import ConfirmDialog from "@Molecules/ConfirmDialog";
+import getDiscountPercentage from "@Utils/functions/getDiscountPercentage";
+import formatNumber from "@Utils/functions/formatNumber";
+import capitalizeString from "@Utils/functions/capitalizeString";
+import type { Product } from "@Types/product";
 
 interface Props extends Product {
   quantity: number;
@@ -25,56 +22,154 @@ export default function CartItem({
   id,
   title,
   price,
-  rating,
-  quantity,
   image,
+  category,
+  quantity,
 }: Props) {
   const dispatch = useAppDispatch();
   const [openConfirm, setOpenConfirm] = useState(false);
-  const handleSetQuantity = (value: number) => {
-    dispatch(
-      editCartItem({
-        id,
-        quantity: value,
-      })
-    );
-  };
-  const handleConfirm = () => {
-    dispatch(removeFromCart(id));
-    setOpenConfirm(false);
-  };
-  const handleCancel = () => {
-    setOpenConfirm(false);
-  };
-  const handleRemove = () => {
-    setOpenConfirm(true);
-  };
+
+  const discount = useMemo(() => getDiscountPercentage(quantity), [quantity]);
+  const subtotal = price * quantity;
+  const discounted = subtotal * (1 - discount);
 
   return (
-    <Card sx={sxCartItem}>
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, x: 24 }}
+      transition={{ type: "spring", stiffness: 360, damping: 30 }}
+    >
       <ConfirmDialog
-        title="Remove item"
-        description="Are you sure you want to remove this item from your cart?"
+        title="Remove from cart?"
+        description="This will remove the item from your cart."
         open={openConfirm}
-        onClose={handleCancel}
-        onConfirm={handleConfirm}
+        onClose={() => setOpenConfirm(false)}
+        onConfirm={() => {
+          dispatch(removeFromCart(id));
+          setOpenConfirm(false);
+        }}
       />
-      <IconButton
-        aria-label="delete"
-        color="error"
-        sx={sxCartDelIcon}
-        onClick={handleRemove}
+
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "84px 1fr auto",
+          gap: 2,
+          py: 2.25,
+          borderBottom: "1px solid",
+          borderColor: "divider",
+        }}
       >
-        <CloseIcon />
-      </IconButton>
-      <CardMedia component="img" alt={title} image={image} sx={sxCartImage} />
-      <Box sx={sxCartContent}>
-        <CardContent isCart {...{ title, price, rating }} />
-        <CardActions
-          isCart
-          {...{ id, price, quantity, setQuantity: handleSetQuantity }}
-        />
+        <Box
+          sx={{
+            width: 84,
+            height: 84,
+            borderRadius: 2,
+            backgroundColor: "background.subtle",
+            overflow: "hidden",
+            display: "grid",
+            placeItems: "center",
+            p: 1.25,
+          }}
+        >
+          <Box
+            component="img"
+            src={image}
+            alt={title}
+            loading="lazy"
+            sx={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
+          />
+        </Box>
+
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5, minWidth: 0 }}>
+          <Typography
+            variant="overline"
+            sx={{ color: "text.secondary", lineHeight: 1 }}
+          >
+            {capitalizeString(category)}
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              fontWeight: 600,
+              color: "secondary.main",
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              lineHeight: 1.35,
+            }}
+          >
+            {title}
+          </Typography>
+
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 1.5,
+              mt: 1,
+              flexWrap: "wrap",
+            }}
+          >
+            <QuantitySelector
+              quantity={quantity}
+              setQuantity={(q) => dispatch(editCartItem({ id, quantity: q }))}
+              size="sm"
+            />
+            <Box sx={{ display: "flex", alignItems: "baseline", gap: 1 }}>
+              {discount > 0 && (
+                <Typography
+                  variant="caption"
+                  sx={{
+                    color: "text.disabled",
+                    textDecoration: "line-through",
+                    fontVariantNumeric: "tabular-nums",
+                  }}
+                >
+                  ${formatNumber(subtotal)}
+                </Typography>
+              )}
+              <Typography
+                sx={{
+                  fontWeight: 700,
+                  fontSize: "0.9375rem",
+                  color: "secondary.main",
+                  fontVariantNumeric: "tabular-nums",
+                }}
+              >
+                ${formatNumber(discounted)}
+              </Typography>
+            </Box>
+          </Box>
+
+          {discount > 0 && (
+            <Chip
+              size="small"
+              label={`${formatNumber(discount * 100)}% volume discount`}
+              color="primary"
+              sx={{ alignSelf: "flex-start", mt: 0.75 }}
+            />
+          )}
+        </Box>
+
+        <IconButton
+          aria-label="Remove from cart"
+          onClick={() => setOpenConfirm(true)}
+          sx={{
+            width: 32,
+            height: 32,
+            color: "text.secondary",
+            alignSelf: "flex-start",
+            "&:hover": { color: "error.main", backgroundColor: "rgba(239,68,68,0.06)" },
+          }}
+        >
+          <CloseRoundedIcon sx={{ fontSize: 16 }} />
+        </IconButton>
       </Box>
-    </Card>
+    </motion.div>
   );
 }

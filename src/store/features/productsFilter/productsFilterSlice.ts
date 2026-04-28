@@ -1,16 +1,20 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "@Store/store";
 import { Product } from "@Types/product";
+
+export type SortBy = "featured" | "price-asc" | "price-desc" | "rating";
 
 interface ProductsFilterState {
   categories: string[];
   searchQuery: string;
+  sortBy: SortBy;
   filteredList: Product[];
 }
 
 const initialState: ProductsFilterState = {
   categories: [],
   searchQuery: "",
+  sortBy: "featured",
   filteredList: [],
 };
 
@@ -18,10 +22,10 @@ export const productsFilterSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    setCategories: (state, action) => {
+    setCategories: (state, action: PayloadAction<string[]>) => {
       state.categories = action.payload;
     },
-    setCategory: (state, action) => {
+    setCategory: (state, action: PayloadAction<string>) => {
       const category = action.payload;
       const index = state.categories.indexOf(category);
       if (index === -1) {
@@ -30,17 +34,25 @@ export const productsFilterSlice = createSlice({
         state.categories.splice(index, 1);
       }
     },
-    setSearchQuery: (state, action) => {
+    setSearchQuery: (state, action: PayloadAction<string>) => {
       state.searchQuery = action.payload;
     },
-    setFilteredList: (state, action) => {
+    setSortBy: (state, action: PayloadAction<SortBy>) => {
+      state.sortBy = action.payload;
+    },
+    setFilteredList: (state, action: PayloadAction<Product[]>) => {
       state.filteredList = action.payload;
     },
   },
 });
 
-export const { setCategories, setCategory, setSearchQuery, setFilteredList } =
-  productsFilterSlice.actions;
+export const {
+  setCategories,
+  setCategory,
+  setSearchQuery,
+  setSortBy,
+  setFilteredList,
+} = productsFilterSlice.actions;
 
 export const selectFilteredList = (state: RootState) =>
   state.productsFilter.filteredList;
